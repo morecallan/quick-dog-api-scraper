@@ -28,12 +28,17 @@ function randomIntFromInterval(min,max)
     return Math.floor(Math.random()*(max-min+1)+min);
 }
 
+function getRandomPrice(min,max)
+{
+  return (Math.floor(Math.random()*(max-min+1)+min)) / 100 ;
+}
+
 //// Parse and return characteristics ////
 app.get('/dogs/*', (req, res) => {
   let numberOfDogs = req.url.slice('/dogs/'.length)
-  console.log(numberOfDogs);
 
-  const dogs = []
+  const doggies = {}
+  doggies.dogs = []
   let counter = 0;
 
   for (let i = 0; i < numberOfDogs; i++) {
@@ -42,13 +47,16 @@ app.get('/dogs/*', (req, res) => {
       color: colors[randomIntFromInterval(0, colors.length - 1)],
     }
 
+    newDog["add-on-price"] = getRandomPrice(0, 7000);
+    newDog["breed-id"] = randomIntFromInterval(0,6)
+
     randomPuppy()
     .then(url => {
         newDog.url = url;
-        dogs.push(newDog);
+        doggies.dogs.push(newDog);
         counter++;
         if (counter == numberOfDogs) {
-          res.send(dogs)
+          res.json(doggies)
         }
     })
   }
