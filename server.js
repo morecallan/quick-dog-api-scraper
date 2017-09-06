@@ -10,8 +10,11 @@ const request = require('request');
 const { load } = require('cheerio');
 const dogNames = require('dog-names');
 const randomPuppy = require('random-puppy');
+const gifSearch = require ('gif-search');
+const catNames = require('cat-names');
 
 
+const specialSkillz = ["Hardly sounds like he’s from Boston at all.", "Willing to be big spoon or little spoon.", "Has a terrific family recipe for brownies.", "Used to be able to do “the worm” kind of.", "Very reliable for giving rides to/ from the airport."]
 
 
 app.use(function(req, res, next) {
@@ -59,6 +62,35 @@ app.get('/dogs/*', (req, res) => {
           res.json(doggies)
         }
     })
+  }
+
+})
+
+app.get('/cats/*', (req, res) => {
+  let numberOfCats = req.url.slice('/cats/'.length)
+
+  const kittens = {}
+  kittens.cats = []
+  let counter = 0;
+
+  for (let i = 0; i < numberOfCats; i++) {
+    let newCat = {
+      name: catNames.random(),
+      color: colors[randomIntFromInterval(0, colors.length - 1)],
+    }
+
+    newCat["specialSkill"] = [getRandomPrice(0, 7000)];
+    newCat["numberOfToes"] = randomIntFromInterval(0,20)
+
+
+    gifSearch.query('cat').then((gifUrl) => {
+      newCat.imageUrl = gifUrl;
+      kittens.cats.push(newCat);
+      counter++;
+      if (counter == numberOfCats) {
+        res.json(kittens)
+      }
+    });
   }
 
 })
