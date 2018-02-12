@@ -24,7 +24,8 @@
     "express": "^4.14.0",
     "gif-search": "^2.0.0",
     "random-puppy": "^1.1.0",
-    "request": "^2.79.0"
+    "request": "^2.79.0",
+    "spotify-web-api-node": "^2.5.0"
   },
   "homepage": "https://github.com/morecallan/quick-dog-api-scraper#readme"
 }

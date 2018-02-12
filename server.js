@@ -13,6 +13,7 @@ const randomPuppy = require('random-puppy');
 const gifSearch = require ('gif-search');
 const catNames = require('cat-names');
 
+var SpotifyWebApi = require('spotify-web-api-node');
 
 
 app.use(function(req, res, next) {
@@ -21,6 +22,11 @@ app.use(function(req, res, next) {
   next();
 });
 
+var spotifyApi = new SpotifyWebApi({
+  clientId : '03479dfda5394c41ad57f276fef1b143',
+  clientSecret : '8855755156ed4bf09e3adef89e4f49f4',
+  redirectUri : 'http://www.google.com'
+});
 
 const colors = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Black", "Brown", "Grey", "Poop-Colored"];
 
@@ -46,6 +52,16 @@ function getRandomPrice(min,max)
 {
   return (Math.floor(Math.random()*(max-min+1)+min)) / 100 ;
 }
+
+
+app.get('/spot', (req, res) => {
+  spotifyApi.getUserPlaylists('thelinmichael')
+  .then(function(data) {
+    res(data.body);
+  },function(err) {
+    console.log('Something went wrong!', err);
+  });
+});
 
 //// Parse and return characteristics ////
 app.get('/dogs/*', (req, res) => {
